@@ -60,7 +60,7 @@ setCookie('Im','testing1', 400);
 setCookie('Testing','testing2', 400);
 setCookie('Too','testing3', 400);
 
-//PASTED IN FOR TESTING:
+//PASTED IN FOR TESTING: 
 function setCookie(name, value, daysToLive){
     const date = new Date();
     date.setTime(date.getTime() +  (daysToLive * 24 * 60 * 60 * 1000));
