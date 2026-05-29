@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', (Event) => {
 
     //Checks if the user does not have a saved value for their cookies, sets
     if (typeof getCookie('money') != 'number') {
-        setCookie('money', 0, 300);
+        setCookie('money', 1, 300);
         money= getCookie('cookie');
     }
     updateScreen();
@@ -62,7 +62,7 @@ function updateScreen() {
 
 
 
-//CODE WRITTEN BY "BRO CODE" ON YOUTUBE: (https://youtu.be/i7oL_K_FmM8?si=qT1KSFUdgSxtRmrH)
+//CODE WRITTEN BY "BRO CODE" ON YOUTUBE - partially edited by me: (https://youtu.be/i7oL_K_FmM8?si=qT1KSFUdgSxtRmrH)
 //Code is in comments of video and in the video itself 
 function setCookie(name, value, daysToLive){
     const date = new Date();
@@ -80,8 +80,13 @@ function getCookie(name){
     
     cArray.forEach(element => {
         if(element.indexOf(name) == 0){
-            result = element.substring(name.length + 1)
+            result = element.substring(name.length + 1);
         }
     })
-    return result;
+    if (typeof parseInt(result) == 'number') {
+        parseInt(result)
+    } else {
+        return result;
+    }
+    
 }
