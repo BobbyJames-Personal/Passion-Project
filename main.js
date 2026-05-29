@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', (Event) => {
     //Checks if the user does not have a saved value for their cookies, sets
     if (typeof getCookie('money') != 'number') {
         setCookie('money', 0, 365);
-        money= getCookie('cookie');
+        money = getCookie('cookie');
     }
     updateScreen();
 });
@@ -41,7 +41,7 @@ document.getElementById("promptButton").addEventListener('click', (MouseEvent) =
 function changeMoney(amount) {
     if (money + amount > 0) {
         money = money + amount;
-        setCookie('money', money, 365);
+        setCookie('money', money, 300);
     } else {
         console.log("There was an attempt to bring money below 0:\nCurrent money: " + money + "\nAmount being removed: " + amount);
         return;
@@ -68,7 +68,7 @@ function setCookie(name, value, daysToLive){
     const date = new Date();
     date.setTime(date.getTime() +  (daysToLive * 24 * 60 * 60 * 1000));
     let expires = "expires=" + date.toUTCString();
-    document.cookie = `${name}=${value}; ${expires}; path=/`
+    document.cookie = `${name}=${value}; ${expires}; path=/; SameSite=Lax; Secure`;
 }
 
 
