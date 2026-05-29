@@ -10,10 +10,6 @@ document.addEventListener('DOMContentLoaded', (Event) => {
     console.log("Everything Loaded :D");
 
     //Checks if the user does not have a saved value for their cookies, sets
-    if (typeof getCookie('money') != 'number') {
-        setCookie('money', 1, 300);
-        money= getCookie('cookie');
-    }
     updateScreen();
 });
 
@@ -25,20 +21,14 @@ document.getElementById("promptButton").addEventListener('click', (MouseEvent) =
 
 
 
-// //Runs whenever window is resized
-// window.addEventListener('resize', (event) => {
-//     //console.log's shouldn't be used, just helpful to track them 
-//     //console.log('Window height:', window.innerHeight);
-//     //console.log('Window width:', window.innerWidth);
-
-//     displaySections();
-// });
-
-
 
 //Used to change money with ease, makes sure it won't go below zero, logs if there is an attempt to.
 //{amount} -- Integer, added to money, negative removes money, postive adds.
 function changeMoney(amount) {
+    if (typeof getCookie('money') != 'number') {
+        setCookie('money', 1, 300);
+        money= getCookie('cookie');
+    }
     if (money + amount > 0) {
         money = money + amount;
         setCookie('money', money, 300);
@@ -83,6 +73,8 @@ function getCookie(name){
             result = element.substring(name.length + 1);
         }
     })
+
+    //Return int if possible
     if (typeof parseInt(result) == 'number') {
         parseInt(result)
     } else {
