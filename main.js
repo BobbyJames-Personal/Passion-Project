@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', (Event) => {
 
     //Checks if the user does not have a saved value for their cookies, sets
     if (typeof getCookie('money') != 'number') {
-        setCookie('money', 0, 365);
+        setCookie('money', 0, 300);
         money= getCookie('cookie');
     }
     updateScreen();
