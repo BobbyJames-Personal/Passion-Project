@@ -20,19 +20,36 @@ document.getElementById("promptButton").addEventListener('click', (MouseEvent) =
 });
 
 
+//AI upgrades:
+document.getElementById("advertise").addEventListener('click', (MouseEvent) => {
+    tryUpgrade('advertiseUpgrade', 50);
+});
+
+function canBuyUpgrade(upgradeName) {
+
+}
+
+function tryUpgrade(upgradeName, cost) {
+    if (getCookie(upgradeName === null)) {console.log('Invalid upgrade name: ' + upgradeName);};
+    if (getCookie('money') >= cost) {
+        console.log('test')
+        return true;
+    }
+}
 
 
 //Used to change money with ease, makes sure it won't go below zero, logs if there is an attempt to.
+//Also updates the cookie if there is no value or a faliure
 //{amount} -- Integer, added to money, negative removes money, postive adds.
 function changeMoney(amount) {
     if (typeof getCookie('money') != 'number') {
         console.log("money cookie undefined? \n " + typeof getCookie('money') != 'number');
-        setCookie('money', 1, 300);
+        setCookie('money', 1, 365);
         money = getCookie('money');
     }
     if (money + amount > 0) {
         money = money + amount;
-        setCookie('money', money, 300);
+        setCookie('money', money, 365);
     } else {
         console.log("There was an attempt to bring money below 0:\nCurrent money: " + money + "\nAmount being removed: " + amount);
         return;
@@ -63,7 +80,8 @@ function setCookie(name, value, daysToLive){
 }
 
 
-//Gets the value of a cookie
+//Gets the value of a cookie through these setps:
+//Gets
 function getCookie(name) {
     const cDecoded = decodeURIComponent(document.cookie);
     const cArray = cDecoded.split("; ");
@@ -76,7 +94,7 @@ function getCookie(name) {
         }
     }
 
-    // If cookie wasn't found, return null immediately
+    //If there is no cooke, return null
     if (result === null) return null;
 
     if (result !== "" && !isNaN(result)) {
