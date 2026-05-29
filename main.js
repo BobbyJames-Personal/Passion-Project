@@ -26,8 +26,9 @@ document.getElementById("promptButton").addEventListener('click', (MouseEvent) =
 //{amount} -- Integer, added to money, negative removes money, postive adds.
 function changeMoney(amount) {
     if (typeof getCookie('money') != 'number') {
+        console.log("money cookie undefined? \n " + typeof getCookie('money') != 'number');
         setCookie('money', 1, 300);
-        money= getCookie('cookie');
+        money = getCookie('money');
     }
     if (money + amount > 0) {
         money = money + amount;
@@ -63,22 +64,24 @@ function setCookie(name, value, daysToLive){
 
 
 //Gets the value of a cookie
-function getCookie(name){
+function getCookie(name) {
     const cDecoded = decodeURIComponent(document.cookie);
     const cArray = cDecoded.split("; ");
     let result = null;
     
-    cArray.forEach(element => {
-        if(element.indexOf(name) == 0){
+    for (const element of cArray) {
+        if (element.indexOf(name + "=") === 0) {
             result = element.substring(name.length + 1);
+            break;
         }
-    })
-
-    //Return int if possible
-    if (typeof parseInt(result) == 'number') {
-        parseInt(result)
-    } else {
-        return result;
     }
+
+    // If cookie wasn't found, return null immediately
+    if (result === null) return null;
+
+    if (result !== "" && !isNaN(result)) {
+        return parseInt(result, 10);
+    } 
     
+    return result;
 }
