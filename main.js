@@ -1,4 +1,7 @@
 var money = getCookie('money');
+var water = getCookie('water');
+
+
 //The large div that contains the two sections
 var mainDiv = document.getElementById('mainDiv');
 //Each section; prompting, and water
@@ -9,6 +12,12 @@ var waterSection = document.getElementById('waterSection');
 document.addEventListener('DOMContentLoaded', (Event) => {
     console.log("Everything Loaded :D");
 
+    if (getCookie('money') === null) {
+        setCookie('money', 0, 365);
+    }
+    if (getCookie('water') === null) {
+        setCookie('water', 5000, 365);
+    }
     //Checks if the user does not have a saved value for their cookies, sets
     updateScreen();
 });
@@ -26,7 +35,7 @@ document.getElementById("advertise").addEventListener('click', (MouseEvent) => {
 });
 
 function canBuyUpgrade(upgradeName) {
-
+    
 }
 
 function tryUpgrade(upgradeName, cost) {
@@ -60,9 +69,11 @@ function changeMoney(amount) {
 
 //Simple update screen function
 function updateScreen() {
-    var moneyDisplay = document.getElementById('moneyDisplay');
+    let moneyDisplay = document.getElementById('moneyDisplay');
+    let waterDisplayBar = document.getElementById('waterDisplayBar');
 
-    moneyDisplay.textContent = ("Money: $" + money);
+    moneyDisplay.firstElementChild.textContent = ("Money: $" + money);
+    waterDisplayBar.style.paddingRight = ((water/100) + '%')
 }
 
 
@@ -81,7 +92,11 @@ function setCookie(name, value, daysToLive){
 
 
 //Gets the value of a cookie through these setps:
-//Gets
+// 1.  Gets the whole cookie string (list of name/value pairs separated by semicolons)
+// 2.  Splits the string by each semicolon, giving each separated name/value pair in an array (cArray)
+// 3.  It then iterates through the array until it finds the name that was input
+// 3.5 If none is found, it returns null
+// 4.  If the result can be parsed as an int, the int value is returned, otherwise it's returned as a string    
 function getCookie(name) {
     const cDecoded = decodeURIComponent(document.cookie);
     const cArray = cDecoded.split("; ");
@@ -94,7 +109,7 @@ function getCookie(name) {
         }
     }
 
-    //If there is no cooke, return null
+    //If there is no cookie, return null
     if (result === null) return null;
 
     if (result !== "" && !isNaN(result)) {
