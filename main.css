@@ -1,9 +1,8 @@
 :root {
     --Very-Large-Text: clamp(25px, 10rem, 250px);
-    --Large-Text: clamp(5rem, 3vw, 200px);
-    --Medium-Text: ;
-
-
+    --Large-Text: clamp(25px, calc(3vw + 1rem), 200px);
+    --Medium-Text: clamp(25px, 3rem, 150px);
+    --Small-Text: clamp(25px, 2rem, 100px);
 }
 
 
@@ -24,7 +23,11 @@ body {
 }
 
 button {
-    font-size: clamp(32px, 3rem, 150px);
+    font-size: var(--Medium-Text);
+}
+
+.smallText {
+    font-size: var(--Small-Text);
 }
 
 #infoSection {
@@ -42,10 +45,10 @@ button {
 #moneyDisplay {
     padding-left: 1rem;
 
-    & > h1 {
+    & h1 {
         color:white;
         font-size: var(--Large-Text);
-        margin:0;
+        margin: auto 0;
     }
 }
 
@@ -55,25 +58,22 @@ button {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
+    & * {
+            grid-area: 1/1;
+        }
     & h1 {
         color:white;
-        margin: auto 0;
+        margin: auto 0 auto 1rem;
         padding: 0;
         font-size: var(--Large-Text);
+        min-width:max-content;
     }
     & > #waterDisplayBar {
         background-color: blue;
         height: 100%;
         width:40%;
-        display:grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        & * {
-            grid-area: 1/1;
-        }
     }
 }
-    
 
 
 
@@ -83,23 +83,27 @@ button {
     align-items: center;
     justify-content: space-evenly;
     flex-wrap: nowrap;
-    & > div {
-        width: clamp(450px, 45%, 1250px);
-        height: clamp(200px, 70vh, 90%);
-        border-radius: 36px;
-        display:flex;
-        align-items: center;
-        justify-content: space-around;
-        flex-direction: column;
-        & > h1 {
-            font-size: var(--Very-Large-Text);
-            margin:0;
-            padding:0;
-        }
-    }
+    
 }
 
-@media only screen and (max-width:1200px) {
+.largeSection {
+    width: clamp(450px, 45%, 1250px);
+    height: clamp(200px, 70vh, 90%);
+    border-radius: 36px;
+
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 5fr 1fr;
+    padding: 2rem 0 2rem 0;
+    * {
+        margin:auto auto;
+    }
+    & > h1 {
+        font-size: var(--Very-Large-Text);
+    }
+}
+/* 
+@media only screen and (max-width:1200px), only screen and (min-height:1000px) {
     #mainDiv {
         flex-direction: column;
         align-items: space-evenly;
@@ -109,6 +113,12 @@ button {
             height: 45%;
         }
     }
+    #infoDiv {
+        & h1 {
+            min-width: fit-content;
+            color:red;
+        }
+    }
 }
 
 @media only screen and (max-width:750px) {
@@ -116,13 +126,10 @@ button {
         width: 90%;
         height: 45%;
     }
-}
+} */
 
 #promptSection {
     background-color: red;
-    &  * {
-        flex-shrink: 0;
-    }
     & > h1 {
         color: #ffcccc;
     }   
@@ -131,7 +138,7 @@ button {
 #promptButton {
     background-color: #999;
     width: 75%;
-    height: 10%;
+    height: 100%;
     border-radius: 1500px;
     border-width:0px;
     
@@ -139,9 +146,6 @@ button {
 
 #waterSection {
     background-color: blue;
-    * {
-        flex-shrink: 0;
-    }
     > h1 {
         color: #ccccff;
     }
@@ -149,13 +153,9 @@ button {
 #waterButton {
     background-color: #999;
     width: 75%;
-    height: 10%;
+    height: 100%;
     border-radius: 1500px;
     border-width:0px;
-}
-#waterButton:active {
-    animation-name: buttonClick;
-    animation-duration: 0.1s;
 }
 
 .buySection {

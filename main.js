@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', (Event) => {
     if (getCookie('water') === null) {
         setCookie('water', 5000, 365);
     }
+    console.log('Money: ' + getCookie('money'));
+    console.log('Water: ' + getCookie('water'));
+
     //Checks if the user does not have a saved value for their cookies, sets
     updateScreen();
 });
@@ -25,24 +28,37 @@ document.addEventListener('DOMContentLoaded', (Event) => {
 //Clicking prompt button
 document.getElementById("promptButton").addEventListener('click', (MouseEvent) => {
     changeMoney(1);
+    changeWater(-1);
     updateScreen();
 });
-
+//Clicking water button
+document.getElementById('waterButton').addEventListener('click', (MouseEvent) => {
+    changeWater(1);
+    updateScreen
+});
 
 //AI upgrades:
 document.getElementById("advertise").addEventListener('click', (MouseEvent) => {
     tryUpgrade('advertiseUpgrade', 50);
 });
 
-function canBuyUpgrade(upgradeName) {
-    
-}
 
-function tryUpgrade(upgradeName, cost) {
-    if (getCookie(upgradeName === null)) {console.log('Invalid upgrade name: ' + upgradeName);};
-    if (getCookie('money') >= cost) {
-        console.log('test')
-        return true;
+function tryUpgrade(upgradeName, cost) {    
+    //All possible upgrades
+    let upgrades = [
+        'advertise', //AI upgrades
+        'improveCooling', 
+        'buyServer',
+        'buyRam',
+        'turnOffHose', //Water upgrades
+        'recycle',
+        'donateToCharity',
+        'teachOthers'
+    ]
+    if (getCookie('money') >= cost && indexOf(upgradeName, upgrades) != -1) {
+        let numOfUpgrades = getCookie(upgradeName) ?? 0; //sets numOfUpgrades to the cookie's value, if null or undefined, it will return 0
+        
+        setCookie(upgradeName, numOfUpgrades + 1, 365);
     }
 }
 
@@ -56,6 +72,7 @@ function changeMoney(amount) {
         setCookie('money', 1, 365);
         money = getCookie('money');
     }
+
     if (money + amount > 0) {
         money = money + amount;
         setCookie('money', money, 365);
@@ -66,6 +83,27 @@ function changeMoney(amount) {
     console.clear();
     console.log("Current money: " + money)
 }
+//Used to change water with ease, makes sure it won't go below zero, logs if there is an attempt to.
+//Also updates the cookie if there is no value or a faliure
+//{amount} -- Integer, added to water, negative removes water, postive adds.
+function changeWater(amount) {
+    if (typeof getCookie('water') != 'number') {
+        console.log("water cookie undefined? \n " + typeof getCookie('money') != 'number');
+        setCookie('water', 1, 365);
+        water = getCookie('water');
+    }
+
+    if (water + amount > 0) {
+        water = water + amount;
+        setCookie('water', water, 365);
+    } else {
+        console.log("There was an attempt to bring water below 0:\nCurrent water: " + water + "\nAmount being removed: " + amount);
+        return;
+    }
+    console.clear();
+    console.log("Current water: " + water)
+    updateScreen();
+}
 
 //Simple update screen function
 function updateScreen() {
@@ -73,7 +111,7 @@ function updateScreen() {
     let waterDisplayBar = document.getElementById('waterDisplayBar');
 
     moneyDisplay.firstElementChild.textContent = ("Money: $" + money);
-    waterDisplayBar.style.paddingRight = ((water/100) + '%')
+    waterDisplayBar.style.width = ((water/100) + '%')
 }
 
 
