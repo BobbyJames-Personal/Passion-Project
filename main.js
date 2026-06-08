@@ -43,18 +43,20 @@ document.getElementById("advertise").addEventListener('click', (MouseEvent) => {
 });
 
 
-function tryUpgrade(upgradeName, cost) {    
+function tryUpgrade(upgradeName) {    
     //All possible upgrades
-    let upgrades = [
-        'advertise', //AI upgrades
-        'improveCooling', 
-        'buyServer',
-        'buyRam',
-        'turnOffHose', //Water upgrades
-        'recycle',
-        'donateToCharity',
-        'teachOthers'
-    ]
+    let upgrades = {
+        'advertise':[100,10], //AI upgrades
+        'improveCooling':[100,10], 
+        'buyServer':[100,10],
+        'buyRam':[100,10],
+        'turnOffHose':[100,10], //Water upgrades
+        'recycle':[100,10],
+        'donateToCharity':[100,10],
+        'teachOthers':[100,10]
+    }
+    let cost = upgrades[upgradeName][0];
+
     if (getCookie('money') >= cost && indexOf(upgradeName, upgrades) != -1) {
         let numOfUpgrades = getCookie(upgradeName) ?? 0; //sets numOfUpgrades to the cookie's value, if null or undefined, it will return 0
         
