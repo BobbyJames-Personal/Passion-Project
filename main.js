@@ -56,8 +56,11 @@ function tryUpgrade(upgradeName) {
         'teachOthers':[100,10]
     }
     let cost = upgrades[upgradeName][0];
+    if (cost === null) {
+        return;
+    }
 
-    if (getCookie('money') >= cost && indexOf(upgradeName, upgrades) != -1) {
+    if (getCookie('money') >= cost) {
         let numOfUpgrades = getCookie(upgradeName) ?? 0; //sets numOfUpgrades to the cookie's value, if null or undefined, it will return 0
         
         setCookie(upgradeName, numOfUpgrades + 1, 365);
