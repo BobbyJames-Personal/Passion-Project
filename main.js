@@ -1,13 +1,10 @@
-var money = getCookie('money');
-var water = getCookie('water');
-
-
 //The large div that contains the two sections
 var mainDiv = document.getElementById('mainDiv');
 //Each section; prompting, and water
 var promptSection = document.getElementById('promptSection');
 var waterSection = document.getElementById('waterSection');
 
+const mainLoopID = setInterval(incomeLoop,1000);
 
 document.addEventListener('DOMContentLoaded', (Event) => {
     console.log("Everything Loaded :D");
@@ -37,11 +34,34 @@ document.getElementById('waterButton').addEventListener('click', (MouseEvent) =>
     updateScreen
 });
 
-//AI upgrades:
-document.getElementById("advertise").addEventListener('click', (MouseEvent) => {
-    tryUpgrade('advertiseUpgrade', 50);
+document.querySelectorAll('.buySection > *').forEach(child => {
+    child.addEventListener('click', (mouseEvent) => {
+        let clickedButtonID = mouseEvent.currentTarget.id;
+        tryUpgrade(clickedButtonID);
+    });
 });
 
+function incomeLoop() {
+    let currentMoney = getCookie('money');
+    let currentWater = getCookie('water');
+    let moneyPerSecond = getCookie('moneyIncrease') ?? 0;
+    let waterPerSecond = getCookie('waterIncrease') ?? 0;
+    if (currentWater <= 0 || currentWater > 10000) {
+        console.log('ENDING GAME');
+        endGame();
+        return;
+    }
+    if (waterPerSecond == 0 && moneyPerSecond == 0) {
+        console.log('User has no income');
+        return;
+    } else {
+        setCookie('money', currentMoney + moneyPerSecond, 365);
+        setCookie('water', currentWater + waterPerSecond - moneyPerSecond, 365);
+        
+        
+        updateScreen();
+    }
+}
 
 function tryUpgrade(upgradeName) {    
     //All possible upgrades
@@ -55,15 +75,24 @@ function tryUpgrade(upgradeName) {
         'collectRain':[1500,50,'water'],
         'filterWaste':[12500,100,'water']
     }
-    let cost = upgrades[upgradeName][0];
-    if (cost === null) {
-        return;
+    //If there is no upgrade with that name:
+    if (!upgrades.hasOwnProperty(upgradeName)) {
+        console.log("'" + upgradeName + "' Upgrade does not exist");
+        return; 
     }
+    let cost = upgrades[upgradeName][0];
+    let incomeIncrease = upgrades[upgradeName][1];
+    let type = upgrades[upgradeName][2];
 
-    if (getCookie('money') >= cost) {
-        let numOfUpgrades = getCookie(upgradeName) ?? 0; //sets numOfUpgrades to the cookie's value, if null or undefined, it will return 0
-        
-        setCookie(upgradeName, numOfUpgrades + 1, 365);
+    if (getCookie('money') < cost) {
+        console.log("User does not have enough money");
+        return;        
+    } else {
+        let currentIncome = getCookie(type + 'Increase') ?? 0;
+        setCookie(type + 'Increase', currentIncome + incomeIncrease, 365)
+        changeMoney(-1 * cost)
+        updateScreen();
+        console.log(`Increased ${type}-Income by ${incomeIncrease}\nIncome is now: ${getCookie(type + 'Increase')}`);
     }
 }
 
@@ -74,11 +103,10 @@ function tryUpgrade(upgradeName) {
 function changeMoney(amount) {
     if (typeof getCookie('money') != 'number') {
         console.log("money cookie undefined? \n " + typeof getCookie('money') != 'number');
-        setCookie('money', 1, 365);
-        money = getCookie('money');
+        setCookie('money', 1, 365);        
     }
-
-    if (money + amount > 0) {
+    let money = getCookie('money');
+    if (money + amount >= 0) {
         money = money + amount;
         setCookie('money', money, 365);
     } else {
@@ -95,15 +123,12 @@ function changeWater(amount) {
     if (typeof getCookie('water') != 'number') {
         console.log("water cookie undefined? \n " + typeof getCookie('money') != 'number');
         setCookie('water', 1, 365);
-        water = getCookie('water');
+        
     }
-
-    if (water + amount > 0) {
+    let water = getCookie('water');
+    if (water + amount >= 0) {
         water = water + amount;
         setCookie('water', water, 365);
-    } else {
-        console.log("There was an attempt to bring water below 0:\nCurrent water: " + water + "\nAmount being removed: " + amount);
-        return;
     }
     console.clear();
     console.log("Current water: " + water)
@@ -115,11 +140,27 @@ function updateScreen() {
     let moneyDisplay = document.getElementById('moneyDisplay');
     let waterDisplayBar = document.getElementById('waterDisplayBar');
 
-    moneyDisplay.firstElementChild.textContent = ("Money: $" + money);
-    waterDisplayBar.style.width = ((water/100) + '%')
+    moneyDisplay.firstElementChild.textContent = ("Money: $" + getCookie('money'));
+    waterDisplayBar.style.width = ((getCookie('water')/100) + '%')
 }
 
-
+//Function to end the game (duh)
+function endGame() {
+    clearInterval(mainLoopID);
+    let water = getCookie('water');
+    document.querySelectorAll('body *').forEach(child => child.style.display = 'none');
+    
+    document.getElementById('endGameDiv').style.display = 'grid';
+    document.querySelectorAll('#endGameDiv *').forEach(child => child.style.display = 'block');
+    
+    let endGameWinLose = document.getElementById('endGameWinLose')
+    if (water > 10000) {
+        endGameWinLose.textContent = 'You also like won by the way. Congrats?'
+    }
+    if (water < 0) {
+        endGameWinLose.textContent = 'You lost LMAO';
+    }
+}
 
 
 

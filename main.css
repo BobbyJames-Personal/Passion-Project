@@ -37,6 +37,19 @@ button {
     font-size: var(--Small-Text);
 }
 
+#endGameDiv {
+    margin:50px auto;
+    font-size: 2rem;
+    width:90%;
+    height:80%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    
+    grid-template-rows: 4fr 1fr;
+    grid-template-columns: 1fr;
+}
+
 #infoSection {
     background-color:green;
     margin:0;
