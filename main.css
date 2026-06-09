@@ -1,7 +1,7 @@
 :root {
     --Very-Large-Text: clamp(25px, calc(10vw + 1rem), 250px);
     --Large-Text: clamp(25px, calc(3vw + 1rem), 200px);
-    --Medium-Text: clamp(25px, calc(2vw + 2rem), 150px);
+    --Medium-Text: clamp(25px, calc(1vw + 2rem), 150px);
     --Small-Text: clamp(25px, calc(1vw + 1rem), 100px);
 }
 
@@ -130,8 +130,8 @@ button {
     }
 }
 
-@media only screen and (max-width:750px) {
-    
+@media only screen and (max-width:950px) {
+
     .largeSection {
         width: 90%;
         height: 45%;
@@ -157,7 +157,6 @@ button {
     height: 100%;
     border-radius: 1500px;
     border-width:0px;
-    
 }
 
 #waterSection {
@@ -180,11 +179,12 @@ button {
     display:grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+    gap:1rem;
     > button {
         align-self: center;
         margin: 0 auto;
-        height: 90%;
-        width: 90%;
+        height: 100%;
+        width: 100%;
         border-radius: 40px;
         border-width: 0;
     }

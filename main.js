@@ -46,14 +46,14 @@ document.getElementById("advertise").addEventListener('click', (MouseEvent) => {
 function tryUpgrade(upgradeName) {    
     //All possible upgrades
     let upgrades = {
-        'advertise':[100,10], //AI upgrades
-        'improveCooling':[100,10], 
-        'buyServer':[100,10],
-        'buyRam':[100,10],
-        'turnOffHose':[100,10], //Water upgrades
-        'recycle':[100,10],
-        'donateToCharity':[100,10],
-        'teachOthers':[100,10]
+        'advertise':[50,1,'money'], //AI upgrades
+        'improveCooling':[250,10,'money'], 
+        'buyServer':[1000,50,'money'],
+        'buyRam':[10000,100,'money'],
+        'drinkTheRain':[100,1,'water'], //Water upgrades
+        'boilPondWater':[500,10,'water'],
+        'collectRain':[1500,50,'water'],
+        'filterWaste':[12500,100,'water']
     }
     let cost = upgrades[upgradeName][0];
     if (cost === null) {
