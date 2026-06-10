@@ -44,8 +44,8 @@ document.querySelectorAll('.buySection > *').forEach(child => {
 function incomeLoop() {
     let currentMoney = getCookie('money');
     let currentWater = getCookie('water');
-    let moneyPerSecond = getCookie('moneyIncrease') ?? 0;
-    let waterPerSecond = getCookie('waterIncrease') ?? 0;
+    let moneyPerSecond = getCookie('moneyIncome') ?? 0;
+    let waterPerSecond = getCookie('waterIncome') ?? 0;
     if (currentWater <= 0 || currentWater > 10000) {
         console.log('ENDING GAME');
         endGame();
@@ -81,18 +81,18 @@ function tryUpgrade(upgradeName) {
         return; 
     }
     let cost = upgrades[upgradeName][0];
-    let incomeIncrease = upgrades[upgradeName][1];
+    let incomeIncome = upgrades[upgradeName][1];
     let type = upgrades[upgradeName][2];
 
     if (getCookie('money') < cost) {
         console.log("User does not have enough money");
         return;        
     } else {
-        let currentIncome = getCookie(type + 'Increase') ?? 0;
-        setCookie(type + 'Increase', currentIncome + incomeIncrease, 365)
+        let currentIncome = getCookie(type + 'Income') ?? 0;
+        setCookie(type + 'Income', currentIncome + incomeIncome, 365)
         changeMoney(-1 * cost)
         updateScreen();
-        console.log(`Increased ${type}-Income by ${incomeIncrease}\nIncome is now: ${getCookie(type + 'Increase')}`);
+        console.log(`Incomed ${type}-Income by ${incomeIncome}\nIncome is now: ${getCookie(type + 'Income')}`);
     }
 }
 
@@ -160,6 +160,10 @@ function endGame() {
     if (water < 0) {
         endGameWinLose.textContent = 'You lost LMAO';
     }
+    setCookie('money', 0, 365);
+    setCookie('water', 5000, 365);
+    setCookie('moneyIncome', 0, 365);
+    setCookie('waterIncome', 0, 365);
 }
 
 
